@@ -85,5 +85,11 @@ namespace MuseumApp
 
             return ratings.Any() ? ratings.Sum(userRating => userRating.Rating) / ratings.Count() : 0;
         }
+
+        public static void ClearDatabase()
+        {
+            connection.DeleteAll<User>();
+            connection.DeleteAll<UserRating>();
+        }
     }
 }
