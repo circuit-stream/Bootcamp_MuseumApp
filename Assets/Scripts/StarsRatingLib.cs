@@ -9,7 +9,20 @@ namespace MuseumApp
         private static readonly Color userRatingStarColor = new Color(0.1f, 0.34f, 0.72f);
         private static readonly Color inactiveStarColor = new Color(0.78f, 0.78f, 0.78f);
 
-        public static void SetupStars(Image[] stars, int activeStarsCount, bool isUserRating)
+        public static void SetupStars(Image[] stars, string attractionId)
+        {
+            var userRating = Database.GetUserAttractionRating(attractionId);
+            if (userRating != null)
+            {
+                SetupStars(stars, userRating.Rating, true);
+                return;
+            }
+
+            var rating = Database.GetAttractionTotalRating(attractionId);
+            SetupStars(stars, rating, false);
+        }
+
+        private static void SetupStars(Image[] stars, int activeStarsCount, bool isUserRating)
         {
             var activeColor = isUserRating ? userRatingStarColor : publicRatingStarColor;
 

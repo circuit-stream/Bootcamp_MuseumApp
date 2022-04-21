@@ -41,10 +41,12 @@ namespace MuseumApp
 
         public void OnClickStar(int index)
         {
-            // TODO: Check if user is logged in
-            // TODO: Create save user rating
+            if (!User.IsLoggedIn) return;
 
-            StarsRatingLib.SetupStars(stars, index, true);
+            var attractionId = attractionConfig.id;
+
+            Database.Rate(attractionId, index);
+            StarsRatingLib.SetupStars(stars, attractionId);
         }
 
         private void Start()
@@ -59,7 +61,7 @@ namespace MuseumApp
 
             SetupCover();
 
-            // TODO: StarsRatingLib.SetupStars
+            StarsRatingLib.SetupStars(stars, attractionConfig.id);
         }
 
         private void SetupCover()
