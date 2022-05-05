@@ -47,6 +47,7 @@ namespace MuseumApp
             }
 
             SetupUsername();
+            PlayFabController.Instance.LoginWithPlayFab();
         }
 
         private void SetupUsername()
