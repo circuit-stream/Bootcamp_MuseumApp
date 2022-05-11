@@ -47,6 +47,28 @@ namespace MuseumApp
                 error => OnPlayFabFailure(error, "LoginWithEmailAddress"));
         }
 
+        public void RegisterPlayFabUser(
+            string email, string password, Action callback = null)
+        {
+            var request = new RegisterPlayFabUserRequest
+            {
+                RequireBothUsernameAndEmail = false,
+                Email = email,
+                Password = password
+            };
+
+            PlayFabClientAPI.RegisterPlayFabUser(
+                request,
+                result => OnRegister(result, callback),
+                error => OnPlayFabFailure(error, "LoginWithEmailAddress"));
+        }
+
+        private void OnRegister(RegisterPlayFabUserResult result, Action callback)
+        {
+            Debug.Log($"Registered new user: {result.PlayFabId}");
+            callback?.Invoke();
+        }
+
         private void OnLoginSuccess(LoginResult result, Action callback)
         {
             Debug.Log($"Successfully logged in with: {result.PlayFabId}");

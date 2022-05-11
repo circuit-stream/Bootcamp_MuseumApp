@@ -32,10 +32,9 @@ namespace MuseumApp
             if (!usernameValid || !passwordValid)
                 return;
 
-            Database.RegisterPlayer(usernameInput.text, passwordInput.text);
-
-            Login();
-            ClosePopup();
+            PlayFabController
+                .Instance
+                .RegisterPlayFabUser(usernameInput.text, passwordInput.text, OnPlayFabUserRegistered);
         }
 
         public void OnLoginClicked()
@@ -59,6 +58,12 @@ namespace MuseumApp
                     .Instance
                     .LoginWithPlayFab(usernameInput.text, passwordInput.text, OnPlayFabLogin);
             }
+        }
+
+        private void OnPlayFabUserRegistered()
+        {
+            Database.RegisterPlayer(usernameInput.text, passwordInput.text);
+            OnPlayFabLogin();
         }
 
         private void OnPlayFabLogin()
