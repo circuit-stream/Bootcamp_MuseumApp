@@ -55,14 +55,16 @@ namespace MuseumApp
 
             else
             {
-                Login();
-                ClosePopup();
+                PlayFabController
+                    .Instance
+                    .LoginWithPlayFab(usernameInput.text, passwordInput.text, OnPlayFabLogin);
             }
         }
 
-        private void Login()
+        private void OnPlayFabLogin()
         {
             User.Login(usernameInput.text);
+            ClosePopup();
         }
 
         private void ClosePopup()

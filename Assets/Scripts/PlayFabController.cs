@@ -22,20 +22,35 @@ namespace MuseumApp
 
         private PlayFabController() {}
 
-        public void LoginWithPlayFab()
+        public void LoginWithPlayFab(Action callback = null)
         {
             var request = new LoginWithCustomIDRequest
                 { CustomId = "GettingStartedGuide", CreateAccount = true};
 
             PlayFabClientAPI.LoginWithCustomID(
                 request,
-                OnLoginSuccess,
+                result => OnLoginSuccess(result, callback),
                 error => OnPlayFabFailure(error, "LoginWithCustomID"));
         }
 
-        private void OnLoginSuccess(LoginResult result)
+        public void LoginWithPlayFab(string email, string password, Action callback = null)
+        {
+            var request = new LoginWithEmailAddressRequest
+            {
+                Email = email,
+                Password = password
+            };
+
+            PlayFabClientAPI.LoginWithEmailAddress(
+                request,
+                result => OnLoginSuccess(result, callback),
+                error => OnPlayFabFailure(error, "LoginWithEmailAddress"));
+        }
+
+        private void OnLoginSuccess(LoginResult result, Action callback)
         {
             Debug.Log($"Successfully logged in with: {result.PlayFabId}");
+            callback?.Invoke();
         }
 
         private void OnPlayFabFailure(PlayFabError error, string requestName)
@@ -45,5 +60,3 @@ namespace MuseumApp
         }
     }
 }
-
-
