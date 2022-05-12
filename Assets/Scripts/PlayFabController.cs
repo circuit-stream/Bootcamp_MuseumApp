@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -21,6 +22,9 @@ namespace MuseumApp
         }
 
         private PlayFabController() {}
+
+        public Dictionary<string, string> titleData;
+        public Action titleDataAcquired;
 
         public void LoginWithPlayFab(Action callback = null)
         {
@@ -61,6 +65,25 @@ namespace MuseumApp
                 request,
                 result => OnRegister(result, callback),
                 error => OnPlayFabFailure(error, "LoginWithEmailAddress"));
+        }
+
+        public void FetchTitleData()
+        {
+            PlayFabClientAPI.GetTitleData(
+                new GetTitleDataRequest(),
+                OnTitleDataAcquired,
+                error => OnPlayFabFailure(error, "GetTitleData"));
+        }
+
+        private void OnTitleDataAcquired(GetTitleDataResult result)
+        {
+            foreach (var entry in result.Data)
+            {
+                Debug.Log($"Data: {entry.Key} - {entry.Value}");
+            }
+
+            titleData = result.Data;
+            titleDataAcquired?.Invoke();
         }
 
         private void OnRegister(RegisterPlayFabUserResult result, Action callback)

@@ -69,6 +69,7 @@ namespace MuseumApp
         private void OnPlayFabLogin()
         {
             User.Login(usernameInput.text);
+            PlayFabController.Instance.FetchTitleData();
             ClosePopup();
         }
 

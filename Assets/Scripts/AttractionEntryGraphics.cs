@@ -16,6 +16,8 @@ namespace MuseumApp
 
         public AttractionScreenParameters screenParametersPrefab;
 
+        public string Id => attractionConfig.id;
+
         private AttractionConfig attractionConfig;
 
         public void OnClick()
@@ -34,13 +36,12 @@ namespace MuseumApp
             attractionLocation.text = attractionConfig.location;
 
             SetupThumbnail();
-
-            StarsRatingLib.SetupStars(stars, attractionConfig.id);
         }
 
-        public void Refresh()
+        public void Refresh(bool isAttractionEnabled)
         {
             StarsRatingLib.SetupStars(stars, attractionConfig.id);
+            gameObject.SetActive(isAttractionEnabled);
         }
 
         private void SetupThumbnail()
