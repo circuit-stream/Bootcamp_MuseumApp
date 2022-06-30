@@ -86,6 +86,18 @@ namespace MuseumApp
             return ratings.Any() ? ratings.Sum(userRating => userRating.Rating) / ratings.Count() : 0;
         }
 
+        public static void DeleteUser()
+        {
+            connection.Delete(GetUser(User.LoggedInUsername));
+        }
+
+        public static void RemoveAllUserRatings()
+        {
+            connection.Execute(
+                @$"DELETE FROM {nameof(UserRating)} WHERE
+                {nameof(UserRating.Username)} = '{User.LoggedInUsername}'");
+        }
+
         public static void ClearDatabase()
         {
             connection.DeleteAll<User>();
