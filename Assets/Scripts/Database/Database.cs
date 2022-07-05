@@ -55,6 +55,8 @@ namespace MuseumApp
                 Username = User.LoggedInUsername,
                 Rating = rating,
             });
+
+            PlayFabController.Instance.LogAttractionRatingEvent(attractionId, rating);
         }
 
         public static UserRating GetUserAttractionRating(string attractionId)
