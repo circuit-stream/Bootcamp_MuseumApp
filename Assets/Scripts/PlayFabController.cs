@@ -26,6 +26,24 @@ namespace MuseumApp
         public Dictionary<string, string> titleData;
         public Action titleDataAcquired;
 
+        public void LogAttractionRatingEvent(string attractionId, int rating)
+        {
+            var request = new WriteClientPlayerEventRequest
+            {
+                EventName = "UserRating",
+                Body = new Dictionary<string, object>
+                {
+                    {"AttractionId", attractionId},
+                    {"Rating", rating},
+                }
+            };
+
+            PlayFabClientAPI.WritePlayerEvent(
+                request,
+                result => Debug.Log("Attraction rating event logged!"),
+                error => OnPlayFabFailure(error, "LoginWithCustomID"));
+        }
+
         public void LoginWithPlayFab(Action callback = null)
         {
             var request = new LoginWithCustomIDRequest
